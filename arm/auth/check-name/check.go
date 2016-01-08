@@ -12,19 +12,19 @@ import (
 
 
 func main() {
-    
-    name := "storage-account-name"
-    
+	
+	name := "storage-account-name"
+	
 	c, err := helpers.LoadCredentials()
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-    
-    sid := c["subscriptionID"]
-    tid := c["tenantID"]
-    cid := c["clientID"]
-    secret := c["clientSecret"]
-    
+	
+	sid := c["subscriptionID"]
+	tid := c["tenantID"]
+	cid := c["clientID"]
+	secret := c["clientSecret"]
+	
 	ac := storage.NewAccountsClient(sid)
 
 	spt, err := azure.NewServicePrincipalToken(cid, secret, tid, azure.AzureResourceManagerScope)

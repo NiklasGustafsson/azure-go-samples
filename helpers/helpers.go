@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/user"
 	"net/http"
-    
+	
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
@@ -86,11 +86,11 @@ func WithInspection(callbacks ...RequestObserver) autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(r *http.Request) (*http.Request, error) {
 			fmt.Printf("Inspecting Request: %s %s\n", r.Method, r.URL)
-            for _,cb := range callbacks {
-                if cb != nil {
-                    cb(r)
-                }
-            }
+			for _,cb := range callbacks {
+				if cb != nil {
+					cb(r)
+				}
+			}
 			return p.Prepare(r)
 		})
 	}
@@ -100,12 +100,12 @@ func WithInspection(callbacks ...RequestObserver) autorest.PrepareDecorator {
 func ByInspecting(callbacks ...ResponseObserver) autorest.RespondDecorator {
 	return func(r autorest.Responder) autorest.Responder {
 		return autorest.ResponderFunc(func(resp *http.Response) error {
-			fmt.Printf("Inspecting Response: %s for %s %s\n", resp.Status, resp.Request.Method, resp.Request.URL)           
-            for _,cb := range callbacks {
-                if cb != nil {
-                    cb(resp)
-                }
-            }
+			fmt.Printf("Inspecting Response: %s for %s %s\n", resp.Status, resp.Request.Method, resp.Request.URL)		   
+			for _,cb := range callbacks {
+				if cb != nil {
+					cb(resp)
+				}
+			}
 			return r.Respond(resp)
 		})
 	}
