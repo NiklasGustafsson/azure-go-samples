@@ -42,9 +42,10 @@ When you create a secret in the portal, it will only be shown to you once, so ma
 Now that we have the preliminaries taken care of, let's walk through the sample code.
 
 The first step is to load the service principal credentials from somewhere. The helper function just gets it from
-a plain file on disk, clearly not a secure method. Properly using private key infrastructure (PKI) mechanisms is beyond the scope
-of this sample. The storage account name in the sample is invalid, so it will always be rejected. Come up with some unique
-name that consists only of numbers and lower-case letters (no hyphens, in other words).
+a plain file on disk, clearly not a secure method, but proper use of various platform-specific
+private key infrastructure (PKI) mechanisms to store credentials is beyond the scope of this sample. The storage account 
+name in the sample is invalid, so it will always be rejected. Come up with some unique name that consists only of numbers
+and lower-case letters (no hyphens, in other words). You can use the `helpers.RandString(n)` function, for example. 
 
 ```go
 func main() {

@@ -7,7 +7,9 @@ import (
 	"os"
 	"os/user"
 	"net/http"
-	
+	"crypto/rand"
+    
+    "github.com/Azure/azure-sdk-for-go/storage"	
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
@@ -109,4 +111,26 @@ func ByInspecting(callbacks ...ResponseObserver) autorest.RespondDecorator {
 			return r.Respond(resp)
 		})
 	}
+}
+
+// RandString generates a random string containing only lower-case letters and numbers.
+// It is given a character count as its only parameter.
+func RandString(n int) string {
+	if n <= 0 {
+		panic("negative number")
+	}
+	const alphanum = "0123456789abcdefghijklmnopqrstuvwxyz"
+	var bytes = make([]byte, n)
+	rand.Read(bytes)
+	for i, b := range bytes {
+		bytes[i] = alphanum[b%byte(len(alphanum))]
+	}
+	return string(bytes)
+}
+
+// GetStorageClient returns an Azure storage client, which can be used to retrieve service 
+// clients for blobs, files, and queues.
+func GetStorageClient(storageAccount string, storageAccountKey string) storage.Client {
+	cli, _ := storage.NewBasicClient(storageAccount, storageAccountKey)
+	return cli
 }
