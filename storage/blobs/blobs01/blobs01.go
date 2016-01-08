@@ -1,3 +1,5 @@
+// See README.md file for extensive commentary on the sample code in this file.
+
 package main
 
 import (
