@@ -3,7 +3,8 @@ package main
 import (
 	"os"
 	"fmt"
-	
+	"io/ioutil"
+		
 	"github.com/Azure/azure-sdk-for-go/storage"
 	"github.com/Azure/azure-go-samples/helpers"
 )
@@ -96,9 +97,9 @@ func validate(cli storage.BlobStorageClient, blob string, startByte, endByte int
 	
 	defer reader.Close()
 
-	dataRead := make([]byte, blobSize)
+	dataRead,err := ioutil.ReadAll(reader)
 	
-	if _,err := reader.Read(dataRead); err != nil {
+	if err != nil {
 		return fmt.Errorf("Failed to read from %s: %s\n", url, err.Error())
 	}	
 	
