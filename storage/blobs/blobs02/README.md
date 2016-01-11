@@ -46,7 +46,9 @@ right.
 After the file is uploaded, there's a redundant call to SetBlobProperties. This is an alternative way
 of setting the blob's content type, used for demonstration purposes only.
 ```go
-	if err := cli.CreateBlockBlobFromReader(cnt, blob, uint64(fileInfo.Size()), f, &storage.BlobProperties{ContentType: imageJPG}); err != nil {
+	props := storage.BlobProperties{ContentType: imageJPG}
+	
+	if err := cli.CreateBlockBlobFromReader(cnt, blob, uint64(fileInfo.Size()), f, &props); err != nil {
 		fmt.Printf("Failed to create blob '%s' in  '%s': %s\n", blob, cnt, err.Error())
 		return
 	}
@@ -54,18 +56,18 @@ of setting the blob's content type, used for demonstration purposes only.
     
 	fmt.Printf("Successfully uploaded file to '%s'\n", url)
     
-	if err := cli.SetBlobProperties(cnt, blob, storage.BlobProperties{ContentType: imageJPG}); err != nil {
+	if err := cli.SetBlobProperties(cnt, blob, props); err != nil {
 		fmt.Printf("Failed to set properties for '%s': %s\n", url, err.Error())
 		return
 	}    
 ```
 Finally, we'll call the server to see what properties it has stored for the image. 
 ```go
-    props,err := cli.GetBlobProperties(cnt,blob)
+    stored,err := cli.GetBlobProperties(cnt,blob)
     if err != nil {
 		fmt.Printf("Failed to retrieve blob properties for '%s': %s\n", url, err.Error())
 		return
     }    
     
-    fmt.Printf("Stored properties: %s\n", helpers.ToJSON(*props))
+    fmt.Printf("Stored properties: %s\n", helpers.ToJSON(*stored))
 ```
