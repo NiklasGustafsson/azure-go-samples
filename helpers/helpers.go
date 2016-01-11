@@ -8,8 +8,8 @@ import (
 	"os/user"
 	"net/http"
 	"crypto/rand"
-    
-    "github.com/Azure/azure-sdk-for-go/storage"	
+	
+	"github.com/Azure/azure-sdk-for-go/storage"	
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
@@ -111,6 +111,21 @@ func ByInspecting(callbacks ...ResponseObserver) autorest.RespondDecorator {
 			return r.Respond(resp)
 		})
 	}
+}
+
+// RandBytes creates a byte array with length 'n' and fills it with random numbers. By making
+// the data readable characters, looking at the data is easier.
+func RandBytes(n int) []byte {
+	if n <= 0 {
+		panic("negative number")
+	}
+	const alphanum = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	var bytes = make([]byte, n)
+	rand.Read(bytes)
+	for i, b := range bytes {
+		bytes[i] = alphanum[b%byte(len(alphanum))]
+	}
+	return bytes	
 }
 
 // RandString generates a random string containing only lower-case letters and numbers.

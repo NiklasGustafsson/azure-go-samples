@@ -4,7 +4,7 @@ This sample demonstrates a fairly simple blob operation -- uploading a JPEG imag
 sample and won't repeat any of the comments on code that is duplicated here. Rather than coming up with a random container and blob name, we
 will fix the container name and take the blob name from the command line.
 
-Invoking the sample looks like this:
+Invoking the sample looks like this (after you call 'go install' to have the binary created, of course):
 
 ```
     bin/blob02 image-file-path blob-name.jpg 
@@ -39,9 +39,9 @@ but it's a good practice to always include it. We also need the size of the file
     }
 ```
 Once we have that, it's time to create the blob by passing in the file to the blob creation function.
-The function takes a (nil is valid) blob properties struct, which is the only way we have of setting the
-content type of the file. We'll want this so that a client downloading it will get the MIME type
-right.
+The function takes a blob properties struct pointer (nil is valid), the only way we have of setting the
+content type of the file on the server. This is important so that a client downloading it will get the
+MIME type right.
 
 After the file is uploaded, there's a redundant call to SetBlobProperties. This is an alternative way
 of setting the blob's content type, used for demonstration purposes only.
