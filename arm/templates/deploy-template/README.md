@@ -115,7 +115,12 @@ After that, it's smooth sailing. The code should be very familiar to you, having
 	depc := resources.NewDeploymentsClient(sid)
 	depc.Authorizer = spt	
 	
-	deployment,err := depc.CreateOrUpdate(groupName, deploymentName, resources.Deployment { Properties: &deploymentProps  })
+	deployment,err := depc.CreateOrUpdate(
+	    groupName, 
+	    deploymentName, 
+	    resources.Deployment { 
+	    	Properties: &deploymentProps,
+	    })
 ```
 
 That's it! With the exception of the hard-coded parameters map, this code is independent of what kind of template you are using,
