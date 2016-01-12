@@ -11,6 +11,7 @@ import (
 	
 	"github.com/Azure/azure-sdk-for-go/storage"	
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
 )
 
 const (
@@ -28,7 +29,8 @@ func ToJSON(v interface{}) string {
 // credentials_sample.json file for an example.
 //
 // Note: Storing crendentials in a local file must be secured and not shared. It is used here
-// simply to reduce code in the examples, but it not meant to be demonstrated as a best practice.
+// simply to reduce code in the examples, but it is not suggested as a best (or even good)
+// practice.
 func LoadCredentials() (map[string]string, error) {
 	u, err := user.Current()
 	if err != nil {
@@ -53,6 +55,32 @@ func LoadCredentials() (map[string]string, error) {
 	}
 
 	return ensureValueStrings(c), nil
+}
+
+// AuthenticateForARM uses LoadCredentials to load user credentials and uses them to authenticate
+// and create a auth token that can be used by subsequent calls to ARM-based APIs.
+//
+// Note: Storing crendentials in a local file must be secured and not shared. It is used here
+// simply to reduce code in the examples, but it is not suggested as a best (or even good)
+// practice.
+func AuthenticateForARM() (spt *azure.ServicePrincipalToken, sid string, err error) {
+	
+	c, err := LoadCredentials()
+	if err != nil {
+		return
+	}
+	
+	sid = c["subscriptionID"]
+	tid := c["tenantID"]
+	cid := c["clientID"]
+	secret := c["clientSecret"]
+
+	spt,err = azure.NewServicePrincipalToken(cid, secret, tid, azure.AzureResourceManagerScope)
+	if err != nil {
+		return
+	}
+	
+	return 
 }
 
 func ensureValueStrings(mapOfInterface map[string]interface{}) map[string]string {
