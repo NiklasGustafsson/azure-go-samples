@@ -6,7 +6,7 @@
       "value": "armtempadmin"
     },
     "adminPassword": {
-      "value": "testingpasswd"
+      "value": "TestingPassword001"
     },
     "dnsLabelPrefix": {
       "value": "armtemplates-test-001"
