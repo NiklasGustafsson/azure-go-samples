@@ -1,4 +1,4 @@
-# Creating a Windows Server VM Using Azure Resource Manager APIs
+# Creating a Windows Server VM Using ARM APIs
 
 This sample builds on the 'check-name' and 'create-group' ARM samples, which demonstrated how to authenticate
 and create a resource group, respectively. Now, it's time to kick it up a notch and do something real, create
