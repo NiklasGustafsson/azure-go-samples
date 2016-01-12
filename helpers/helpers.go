@@ -38,23 +38,39 @@ func LoadCredentials() (map[string]string, error) {
 	}
 
 	n := u.HomeDir + credentialsPath
-	f, err := os.Open(n)
+	
+	c,err := ReadMap(n)
 	if err != nil {
-		return nil, fmt.Errorf("ERROR: Unable to locate or open Azure credentials at %s (%v)", n, err)
+		return nil, err
+	}
+	
+	return ensureValueStrings(c), nil
+}
+
+// ReadMap reads a file and interprets its contents as a JSON document, which is
+// then unmarshalled as a map. 
+func ReadMap(fileName string) (result map[string]interface{}, err error) {
+	
+	f, err := os.Open(fileName)
+	if err != nil {
+		err = fmt.Errorf("ERROR: Unable to locate or open file at %s (%v)", fileName, err)
+		return
 	}
 
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
-		return nil, fmt.Errorf("ERROR: Unable to read %s (%v)", n, err)
+		err = fmt.Errorf("ERROR: Unable to read %s (%v)", fileName, err)
+		return
 	}
 
-	c := map[string]interface{}{}
-	err = json.Unmarshal(b, &c)
+	result = map[string]interface{}{}
+	err = json.Unmarshal(b, &result)
 	if err != nil {
-		return nil, fmt.Errorf("ERROR: %s contained invalid JSON (%s)", n, err)
+		err = fmt.Errorf("ERROR: %s contained invalid JSON (%s)",fileName, err)
+		return
 	}
-
-	return ensureValueStrings(c), nil
+	
+	return
 }
 
 // AuthenticateForARM uses LoadCredentials to load user credentials and uses them to authenticate

@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "armtempadmin"
+      "value": "tmpltest"
     },
     "adminPassword": {
-      "value": "TestingPassword001"
+      "value": "<<PLEASE EDIT>>"
     },
     "dnsLabelPrefix": {
-      "value": "armtemplates-test-001"
+      "value": "<<MUST BE UNIQUE>>"
     },
     "ubuntuOSVersion": {
       "value": "14.04.2-LTS"
