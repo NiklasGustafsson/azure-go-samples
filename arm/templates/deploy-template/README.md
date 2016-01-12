@@ -115,18 +115,7 @@ After that, it's smooth sailing. The code should be very familiar to you, having
 	depc := resources.NewDeploymentsClient(sid)
 	depc.Authorizer = spt	
 	
-	depc.RequestInspector = helpers.WithInspection()
-	depc.ResponseInspector = helpers.ByInspecting()	
-	
 	deployment,err := depc.CreateOrUpdate(groupName, deploymentName, resources.Deployment { Properties: &deploymentProps  })
-	if err != nil {
-		if aerr,ok := err.(autorest.Error); ok {
-			fmt.Printf("Failed to create resource deployment details: '%s'\n", aerr.Message());
-		} else {
-			fmt.Printf("Failed to create resource deployment: '%s'\n", err.Error())		
-		}
-		return
-	}
 ```
 
 That's it! With the exception of the hard-coded parameters map, this code is independent of what kind of template you are using,
