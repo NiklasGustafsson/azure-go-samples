@@ -9,7 +9,7 @@ We assume that you have already gone through the blobs01 sample and won't repeat
 Invoking the sample looks like this (after you call 'go install' to have the binary created, of course):
 
 ```
-    bin/blob03 <<blob-name>> 
+    bin/blobs03 <<blob-name>> 
 ```
 The code to pick up the arguments:
 ```go

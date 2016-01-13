@@ -7,7 +7,7 @@ will fix the container name and take the blob name from the command line.
 Invoking the sample looks like this (after you call 'go install' to have the binary created, of course):
 
 ```
-    bin/blob02 image-file-path blob-name.jpg 
+    bin/blobs02 image-file-path blob-name.jpg 
 ```
 And the code to pick up the arguments:
 ```go
