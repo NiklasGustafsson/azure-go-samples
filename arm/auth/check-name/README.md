@@ -15,11 +15,12 @@ are not used in this example. We are concerned with the storage management APIs,
 let's use check whether an account name is available.
 
 The Azure Resource Manager does *not* use management certificates. Instead, it relies on [OAuth2](http://oauth.net).
+
 The regular OAuth2 flow, which is used for interactive scenarios, is described in
 [Authorization Code Grant Flow](https://msdn.microsoft.com/en-us/library/azure/dn645543.aspx). You have without a doubt 
-been exposed to this many times in the past, including logging into the Azure portal. The OAuth2 flow applicable to
-unattended scenarios is described in [Client Credentials Grant Flow Diagram](https://msdn.microsoft.com/en-us/library/azure/dn645543.aspx).
-This is the flow that the Go SDK implements and which is used in this example.
+been exposed to this many times in the past, including logging into the Azure portal.
+
+The OAuth2 flow applicable to unattended scenarios is described in [Client Credentials Grant Flow Diagram](https://msdn.microsoft.com/en-us/library/azure/dn645543.aspx). This is the flow that the Go SDK implements and which is used in this example.
 
 Using the client credentials grant flow with Azure requires understanding and creating one or more *Service Principals*,
 which are essentially application identities registered with an Azure ActiveDirectory used in your subscription. 

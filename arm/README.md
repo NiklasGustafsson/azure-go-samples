@@ -6,9 +6,9 @@ look at them in the following order:
 [Authentication](./auth/check-name)
 
 ARM authentication is, unfortunately, relatively complex. In fact, the most complex part of it all is to set up your account to
-accommodate the fact that ARM expects the client to have an application identity, a *service principal*. How to do this is explained
-in the sample commentary, and you will not be able to run any of the other samples without first getting that setup taken care of,
-so start here.
+accommodate the fact that ARM requires UI-less clients to rely on an application identity, a *service principal*. How to do this 
+is explained in the sample. You will not be able to run any of the other samples without first getting that setup
+taken care of, so start here.
 
 [Resource Groups](./resources/create-group)
 
