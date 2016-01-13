@@ -3,7 +3,7 @@
 The samples in this section build on each other, so in order to get the most out of them, we suggest that you
 look at them in the following order:
 
-[Authenticiation](./auth/check-name)
+[Authentication](./auth/check-name)
 
 ARM authentication is, unfortunately, relatively complex. In fact, the most complex part of it all is to set up your account to
 accommodate the fact that ARM expects the client to have an application identity, a *service principal*. How to do this is explained
