@@ -5,7 +5,7 @@ This repository contains samples illustrating how to use the Go SDK for Azure.
 The Go SDK is experimental and offers only partial coverage what is available in Azure. Just like the SDK is divided into
 three high-level areas of functionality, the samples are organized in three collections:
 
-[Azure Storage](./storage/blobs)
+[Azure Storage](./storage)
 
 These samples cover the Azure Storage APIs for blobs, queues, and files. They are fairly simple, explaining how to utilize the
 basic features.
