@@ -2,7 +2,7 @@
 
 This sample will create and write to a page blob, which are blobs optimized for random-access patterns. Unlike block and append blobs,
 page blobs are always a multiple of 512 bytes long, and data can only be written in n*512-byte chunks, aligned on 512-byte boundaries.
-Each such 512-byte chunk is called *a page.* 
+Each such 512-byte chunk is called *a page.*
 
 We assume that you have already gone through the blobs01 sample and won't repeat any of the comments on code that is duplicated here.
 
@@ -108,12 +108,23 @@ the next five should be all zero.
 		return
 	}
 ```
-Finally, __here's an excercise for you__: clearing a page is done by setting the page write type to `storage.PageWriteTypeClear` in the
-call to PutPage. Add a 'clearPage' function to clear a given page range, call it, and validate the results.
+Azure page blobs allow you to clear, that is, set to all zeroes, a range of pages. The sample shows how to do this in the 
+clearPage() function. It comes down to passing in a different kind of page write type value, and no data block, as shown below.
 
-The call should look something like this:
 ```go
-	if err := clearPage(cli, blob, 0, 511); err != nil {
-		return
+	err := cli.PutPage(cnt, name, startByte, endByte, storage.PageWriteTypeClear, nil)
+```
+
+Once we have a page blob in Azure, we can check which pages contain data and which do not (zeroes are data, too, but
+you know what we mean!) by calling the 'GetPageRanges()' function. It returns a list of ranges of pages that have been written
+to rather than cleared or left in their initial state:
+
+```go
+	ranges,err := cli.GetPageRanges(cnt,blob)
+	...	
+	for _,rng := range ranges.PageList {
+		fmt.Printf("[%d,%d]\n", rng.Start, rng.End)
 	}
 ```
+
+That's pretty much it for operations specific to page blobs -- create, write pages, clear pages, examine ranges. 

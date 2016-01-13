@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/network"
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
 	"github.com/Azure/azure-go-samples/helpers"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
 )
 
@@ -61,10 +61,12 @@ func main() {
 	}
 }
 
-func createResourceGroup(subscription, name, location string, spt *azure.ServicePrincipalToken) (group resources.ResourceGroup, err error) {
+func createResourceGroup(
+	subscription, name, location string, 
+	authorizer autorest.Authorizer) (group resources.ResourceGroup, err error) {
 	
 	rgc := resources.NewGroupsClient(subscription)
-	rgc.Authorizer = spt	
+	rgc.Authorizer = authorizer	
 	
 	rgc.RequestInspector = helpers.WithInspection()
 	rgc.ResponseInspector = helpers.ByInspecting()
@@ -79,7 +81,7 @@ func createResourceGroup(subscription, name, location string, spt *azure.Service
 	
 	fmt.Printf("Created resource group '%s'\n", *group.Name)
 	rpc := resources.NewProvidersClient(subscription)
-	rpc.Authorizer = spt
+	rpc.Authorizer = authorizer
 	
 	rpc.RequestInspector = helpers.WithInspection()
 	rpc.ResponseInspector = helpers.ByInspecting()
@@ -97,10 +99,13 @@ func createResourceGroup(subscription, name, location string, spt *azure.Service
 	return
 }
 
-func createStorageAccount(subscription string, group resources.ResourceGroup, spt *azure.ServicePrincipalToken) error {
+func createStorageAccount(
+	subscription string, 
+	group resources.ResourceGroup, 
+	authorizer autorest.Authorizer) error {
 	
 	ac := storage.NewAccountsClient(subscription)
-	ac.Authorizer = spt
+	ac.Authorizer = authorizer
 
 	ac.RequestInspector = helpers.WithInspection()
 	ac.ResponseInspector = helpers.ByInspecting()
@@ -134,11 +139,14 @@ func createStorageAccount(subscription string, group resources.ResourceGroup, sp
 	return nil
 }
 
-func createAvailabilitySet(subscription string, group resources.ResourceGroup, spt *azure.ServicePrincipalToken) (result compute.AvailabilitySet, err error) {
+func createAvailabilitySet(
+	subscription string, 
+	group resources.ResourceGroup, 
+	authorizer autorest.Authorizer) (result compute.AvailabilitySet, err error) {
 	
 	avsc := compute.NewAvailabilitySetsClient(subscription)
 	
-	avsc.Authorizer = spt; 
+	avsc.Authorizer = authorizer; 
 	avsc.RequestInspector = helpers.WithInspection() 
 	avsc.ResponseInspector = helpers.ByInspecting()
 	
@@ -153,13 +161,16 @@ func createAvailabilitySet(subscription string, group resources.ResourceGroup, s
 	return result,nil
 }
 
-func createNetwork(subscription string, group resources.ResourceGroup, spt *azure.ServicePrincipalToken) (snetResult network.Subnet, err error) {
+func createNetwork(
+	subscription string, 
+	group resources.ResourceGroup, 
+	authorizer autorest.Authorizer) (snetResult network.Subnet, err error) {
 	
 	vnetc := network.NewVirtualNetworksClient(subscription)
 	snetc := network.NewSubnetsClient(subscription)
 	
-	vnetc.Authorizer = spt; 
-	snetc.Authorizer = spt; 
+	vnetc.Authorizer = authorizer; 
+	snetc.Authorizer = authorizer; 
 
 	vnetc.RequestInspector = helpers.WithInspection() 
 	vnetc.ResponseInspector = helpers.ByInspecting()
@@ -196,13 +207,17 @@ func createNetwork(subscription string, group resources.ResourceGroup, spt *azur
 	return
 }
 
-func createNetworkInterface(subscription, suffix string, group resources.ResourceGroup, subnet network.Subnet, spt *azure.ServicePrincipalToken) (networkInterface network.Interface, err error) {
+func createNetworkInterface(
+	subscription, suffix string, 
+	group resources.ResourceGroup, 
+	subnet network.Subnet, 
+	authorizer autorest.Authorizer) (networkInterface network.Interface, err error) {
 		
 	pipc  := network.NewPublicIPAddressesClient(subscription)
 	nicc  := network.NewInterfacesClient(subscription)
 
-	pipc.Authorizer = spt; 
-	nicc.Authorizer = spt; 
+	pipc.Authorizer = authorizer; 
+	nicc.Authorizer = authorizer; 
 
 	pipc.RequestInspector = helpers.WithInspection() 
 	pipc.ResponseInspector = helpers.ByInspecting()
@@ -253,11 +268,17 @@ func createNetworkInterface(subscription, suffix string, group resources.Resourc
 	return
 }
 
-func createVirtualMachine(subscription string, group resources.ResourceGroup, vmName, adminName, adminPassword string, availSet compute.AvailabilitySet, networkInterface network.Interface, spt *azure.ServicePrincipalToken) error {
+func createVirtualMachine(
+	subscription string, 
+	group resources.ResourceGroup,
+	vmName, adminName, adminPassword string, 
+	availSet compute.AvailabilitySet, 
+	networkInterface network.Interface, 
+	authorizer autorest.Authorizer) error {
 	
 	vmc := compute.NewVirtualMachinesClient(subscription)
 
-	vmc.Authorizer = spt	
+	vmc.Authorizer = authorizer	
 	
 	vmc.RequestInspector = helpers.WithInspection() 
 	vmc.ResponseInspector = helpers.ByInspecting()
