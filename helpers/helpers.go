@@ -56,6 +56,8 @@ func ReadMap(fileName string) (result map[string]interface{}, err error) {
 		err = fmt.Errorf("ERROR: Unable to locate or open file at %s (%v)", fileName, err)
 		return
 	}
+	
+	defer f.Close()
 
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
@@ -79,7 +81,7 @@ func ReadMap(fileName string) (result map[string]interface{}, err error) {
 // Note: Storing crendentials in a local file must be secured and not shared. It is used here
 // simply to reduce code in the examples, but it is not suggested as a best (or even good)
 // practice.
-func AuthenticateForARM() (spt *azure.ServicePrincipalToken, sid string, err error) {
+func AuthenticateForARM() (spt autorest.Authorizer, sid string, err error) {
 	
 	c, err := LoadCredentials()
 	if err != nil {
