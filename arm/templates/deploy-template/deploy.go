@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"os"
 	
-	"github.com/Azure/azure-sdk-for-go/arm/resources"
+	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 	"github.com/Azure/azure-go-samples/helpers"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
 )
 
@@ -114,10 +113,10 @@ func main() {
 	fmt.Printf("Created resource deployment '%s'\n", *deployment.Name)	
 }
 
-func createResourceGroup(subscription, name, location string, spt *azure.ServicePrincipalToken) (group resources.ResourceGroup, err error) {
+func createResourceGroup(subscription, name, location string, authorizer autorest.Authorizer) (group resources.ResourceGroup, err error) {
 	
 	rgc := resources.NewGroupsClient(subscription)
-	rgc.Authorizer = spt	
+	rgc.Authorizer = authorizer	
 	
 	rgc.RequestInspector = helpers.WithInspection()
 	rgc.ResponseInspector = helpers.ByInspecting()

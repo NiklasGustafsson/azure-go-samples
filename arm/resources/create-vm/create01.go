@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/arm/resources"
+	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
 	"github.com/Azure/azure-sdk-for-go/arm/network"
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
@@ -126,7 +126,6 @@ func createStorageAccount(
 		
 		_,err = ac.Create(name, name,
 			storage.AccountCreateParameters {
-				Name: group.Name,
 				Location: group.Location,
 				Properties: &props,
 			})
@@ -244,8 +243,8 @@ func createNetworkInterface(
 	}
 	
 	nicProps := network.InterfaceIPConfigurationPropertiesFormat{  
-		PublicIPAddress: &network.SubResource { ID: pipResult.ID }, 
-		Subnet: &network.SubResource { ID: subnet.ID } }
+		PublicIPAddress: &pipResult, 
+		Subnet: &subnet }
 		
 	ipConfigs := make([]network.InterfaceIPConfiguration,1,1)
 	ipConfigs[0] = network.InterfaceIPConfiguration {
