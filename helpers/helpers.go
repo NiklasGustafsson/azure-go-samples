@@ -10,6 +10,7 @@ import (
 	"crypto/rand"
 	
 	"github.com/Azure/azure-sdk-for-go/storage"	
+	"github.com/Azure/azure-sdk-for-go/arm"	
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
 )
@@ -81,22 +82,24 @@ func ReadMap(fileName string) (result map[string]interface{}, err error) {
 // Note: Storing crendentials in a local file must be secured and not shared. It is used here
 // simply to reduce code in the examples, but it is not suggested as a best (or even good)
 // practice.
-func AuthenticateForARM() (spt autorest.Authorizer, sid string, err error) {
+func AuthenticateForARM() (client arm.Client,  err error) {
 	
 	c, err := LoadCredentials()
 	if err != nil {
 		return
 	}
 	
-	sid = c["subscriptionID"]
+	sid := c["subscriptionID"]
 	tid := c["tenantID"]
 	cid := c["clientID"]
 	secret := c["clientSecret"]
 
-	spt,err = azure.NewServicePrincipalToken(cid, secret, tid, azure.AzureResourceManagerScope)
+	spt,err := azure.NewServicePrincipalToken(cid, secret, tid, azure.AzureResourceManagerScope)
 	if err != nil {
-		return
+		return 
 	}
+	
+	client = arm.NewClient(sid, spt)
 	
 	return 
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	
+	"github.com/Azure/azure-sdk-for-go/arm"
 	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 	"github.com/Azure/azure-go-samples/helpers"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
@@ -21,13 +22,16 @@ func main() {
 	groupName := "templatetests"
 	groupLocation := "West US"
 		
-	spt,sid,err := helpers.AuthenticateForARM()
+	arm,err := helpers.AuthenticateForARM()
 	if err != nil {
 		fmt.Printf("Failed to authenticate: '%s'\n", err.Error())
 		return
 	}
-
-	_,err = createResourceGroup(sid, groupName, groupLocation, spt)
+	
+	arm.RequestInspector = helpers.WithInspection()
+	arm.ResponseInspector = helpers.ByInspecting()
+	
+	_,err = createResourceGroup(groupName, groupLocation, arm)
 	if err != nil {
 		fmt.Printf("Failed to create resource group '%s': '%s'\n", groupName, err.Error())
 		return
@@ -94,13 +98,7 @@ func main() {
 
 	}
 
-	depc := resources.NewDeploymentsClient(sid)
-	depc.Authorizer = spt	
-	
-	depc.RequestInspector = helpers.WithInspection()
-	depc.ResponseInspector = helpers.ByInspecting()	
-	
-	deployment,err := depc.CreateOrUpdate(groupName, deploymentName, resources.Deployment { Properties: &deploymentProps  })
+	deployment,err := arm.Deployments().CreateOrUpdate(groupName, deploymentName, resources.Deployment { Properties: &deploymentProps  })
 	if err != nil {
 		if aerr,ok := err.(autorest.Error); ok {
 			fmt.Printf("Failed to create resource deployment details: '%s'\n", aerr.Message());
@@ -113,13 +111,9 @@ func main() {
 	fmt.Printf("Created resource deployment '%s'\n", *deployment.Name)	
 }
 
-func createResourceGroup(subscription, name, location string, authorizer autorest.Authorizer) (group resources.ResourceGroup, err error) {
+func createResourceGroup(name, location string, arm arm.Client) (group resources.ResourceGroup, err error) {
 	
-	rgc := resources.NewGroupsClient(subscription)
-	rgc.Authorizer = authorizer	
-	
-	rgc.RequestInspector = helpers.WithInspection()
-	rgc.ResponseInspector = helpers.ByInspecting()
+	rgc := arm.ResourceGroups()
 	
 	params := resources.ResourceGroup{Name:&name,Location:&location}
 	

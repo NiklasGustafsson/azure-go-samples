@@ -12,17 +12,16 @@ func main() {
 	groupName := "armtestgroup"
 	groupLocation := "West US"
 
-	spt,sid,err := helpers.AuthenticateForARM()
+	arm,err := helpers.AuthenticateForARM()
 	if err != nil {
 		fmt.Printf("Failed to authenticate: '%s'\n", err.Error())
 		return
 	}
 	
-	rgc := resources.NewGroupsClient(sid)
-	rgc.Authorizer = spt	
-	
-	rgc.RequestInspector = helpers.WithInspection()
-	rgc.ResponseInspector = helpers.ByInspecting()
+	arm.RequestInspector = helpers.WithInspection()
+	arm.ResponseInspector = helpers.ByInspecting()
+		
+	rgc := arm.ResourceGroups()
 	
 	params := resources.ResourceGroup{Name:&groupName,Location:&groupLocation}
 	
