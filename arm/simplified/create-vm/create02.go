@@ -26,8 +26,8 @@ func main() {
 			to.StringPtr("vmgroup02"),
 			to.StringPtr("West US"),
 			arm.VMParameters{
-				User:     "niklasg",
-				Password: "FooBar2001",
+				User:     "user1",
+				Password: "Catch22",
 				ImageReference: compute.ImageReference{
 					Publisher: to.StringPtr("MicrosoftWindowsServer"),
 					Offer:     to.StringPtr("WindowsServer"),
@@ -51,8 +51,8 @@ func main() {
 			to.StringPtr("vmgroup01"),
 			to.StringPtr("West US"),
 			arm.VMParameters{
-				User:     "niklasg",
-				Password: "FooBar2001",
+				User:     "user1",
+				Password: "Catch22",
 				ImageReference: compute.ImageReference{
 					Publisher: to.StringPtr("Canonical"),
 					Offer:     to.StringPtr("UbuntuServer"),
